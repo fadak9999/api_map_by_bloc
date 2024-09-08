@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => ApiBloc(ApiService()),
       child: const MaterialApp(
+        
         debugShowCheckedModeBanner: false,
         home: CategoryListScreen(), 
       ),
