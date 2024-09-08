@@ -10,6 +10,9 @@ import 'package:api_map_by_bloc/API/ApiService.dart';
 part 'api_event.dart';
 part 'api_state.dart';
 
+
+
+
 class ApiBloc extends Bloc<ApiEvent, ApiState> {
   final ApiService apiService;
 
@@ -18,9 +21,15 @@ class ApiBloc extends Bloc<ApiEvent, ApiState> {
       emit(CategoriesLoading());
       try {
         final categories = await apiService.fetchCategories();
-        emit(CategoriesLoaded(categories));
+        print('Fetched Categories: ${categories.length}'); // Debug print
+        if (categories.isEmpty) {
+          emit(CategoriesError('No categories found.'));
+        } else {
+          emit(CategoriesLoaded(categories));
+        }
       } catch (e) {
-        emit(CategoriesError(e.toString()));
+        print('Error fetching categories: $e'); // Debug print
+        emit(CategoriesError('Failed to fetch categories. Please check your connection.'));
       }
     });
   }

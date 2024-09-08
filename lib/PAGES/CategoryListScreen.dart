@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -6,25 +5,24 @@ import 'package:api_map_by_bloc/bloc/api_bloc.dart';
 import 'package:api_map_by_bloc/API/ApiService.dart';
 import 'package:api_map_by_bloc/PAGES/LocationListScreen.dart';
 
-
 class CategoryListScreen extends StatelessWidget {
   const CategoryListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ApiBloc(ApiService())..add(FetchCategories()),
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text('Categories'),
-        ),
-        body: Stack(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text('Categories'),
+      ),
+      body: BlocProvider(
+        create: (context) => ApiBloc(ApiService())..add(FetchCategories()),
+        child: Stack(
           children: [
-            Positioned.fill(
+            const Positioned.fill(
               child: GoogleMap(
-                initialCameraPosition: const CameraPosition(
+                initialCameraPosition: CameraPosition(
                   target: LatLng(31.99330933, 44.3153606),
                   zoom: 14.0,
                 ),
@@ -45,6 +43,9 @@ class CategoryListScreen extends StatelessWidget {
                       return Center(child: Text('Error: ${state.message}'));
                     } else if (state is CategoriesLoaded) {
                       final categories = state.categories;
+                      if (categories.isEmpty) {
+                        return const Center(child: Text('No categories found.'));
+                      }
                       return ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: categories.length,
@@ -82,7 +83,7 @@ class CategoryListScreen extends StatelessWidget {
                         },
                       );
                     }
-                    return const Center(child: Text('No categories found.'));
+                    return const Center(child: Text('Loading...'));
                   },
                 ),
               ),

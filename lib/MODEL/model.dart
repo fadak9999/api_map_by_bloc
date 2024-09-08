@@ -1,5 +1,3 @@
-
-
 class MyCategory {
   final String id;
   final String name;
@@ -35,8 +33,20 @@ class MyCategory {
       locations: locationList,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'Id': id,
+      'name': name,
+      'color_hex': colorHex,
+      'icon_Id': iconId,
+      'image': image,
+      'location_count': locationCount,
+      'locations': locations.map((loc) => loc.toJson()).toList(),
+    };
+  }
 }
-//
+/////
 class CategoryLocation {
   final String id;
   final String name;
@@ -72,5 +82,19 @@ class CategoryLocation {
       iconId: json['icon_Id'].toString(),
       image: json['image'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'Id': id,
+      'name': name,
+      'google_latitude': googleLatitude,
+      'google_longitude': googleLongitude,
+      'description': description,
+      'category_name': categoryName,
+      'color_hex': colorHex,
+      'icon_Id': iconId,
+      'image': image,
+    };
   }
 }
